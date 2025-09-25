@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <title>OAuth Login Demo | Alledo Tech Accounts</title>
+
+  <!-- Alledo Tech OAuth Login -->
+  <script src="https://accounts.alledotech.in/v2/oauth/signin/2.0.1/service.js"></script>
+
+</head>
+
+<body>
+  <h1>Login Demo</h1>
+  <h2>Alledo Tech Accounts</h2>
+
+  <button onclick="popupLogin()">Login via PopUp</button>
+  <button onclick="redirectLogin()">Login via Redirect</button>
+</body>
+
+<script>
+  var auth = new AlledoTechAuth();
+  var provider = new auth.Provider();
+
+  provider.add("google");
+  provider.addScope("user.name");
+
+  var design = new auth.Design();
+  design.customizePopUp({ width: 900, height: 600 });
+
+
+  var credentials = new auth.Credentials({
+    client_id: "{your-client-id}",
+    redirect_uri: "{redirect-page}",
+  });
+
+
+  // Popup Login Method (Recommended)
+  // simply call popupLogin() function on button click
+
+  function popupLogin() {
+    auth.auth(credentials).signInWithPopup(provider, design).then((result) => {
+      console.log("Popup Result:", result);
+    }).catch((error) => {
+      console.error("Popup Result Error:", error);
+    });
+  }
+
+
+  // Redirect Login Method
+  // simply call redirectLogin() function on button click
+
+  function redirectLogin() {
+    auth.auth(credentials).signInWithRedirect(provider);
+  }
+
+
+  // Get redirect results
+
+  auth.auth().getRedirectResult().then((result) => {
+    console.log("Redirect Result:", result);
+  }).catch((error) => {
+    console.error("Redirect Result Error:", error);
+  });
+
+</script>
+
+</html>
